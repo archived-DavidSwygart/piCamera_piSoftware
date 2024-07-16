@@ -32,7 +32,10 @@ encoder = H264Encoder(
     bitrate=10000000,
     framerate=mode['fps']
     )
-output = FfmpegOutput(output_filename='mode'+str(modeNum)+'.mp4')
+
+import datetime
+vidName = datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+output = FfmpegOutput(output_filename='vids/'+vidName+'.mp4')
 
 picam2.start_preview(Preview.QTGL, width=800, height=480, x=0, y=0)
 picam2.title_fields = ["ExposureTime", "AnalogueGain","Lux"]
