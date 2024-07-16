@@ -1,14 +1,8 @@
 #!/bin/bash
-#This script records a video 
-#Arguments: $1:Name of Video, $2: Length (minutes), $3: Frames per second
+#This is a simple wrapper that calls the python script capture_video.py
+#Arguments: $1 = Length (seconds)
 
-export DISPLAY=:0
+cd "$(dirname "$0")" #CD to directory of this script
 
-ans=$(echo "$2 * 60000" | bc)
-now=$(date "+%F")
-echo "Started recording at" $(date +%H:%M:%S)
-
-
-rpicam-vid -t $ans --codec h264 --denoise off --level 4.2   -o $1"_"$HOSTNAME"_"$now.h264
-
-echo "Finished for now..."
+v4l2-ctl --set-ctrl wide_dynamic_range=1 -d /dev/v4l-subdev0 #Turn on HDR video mode
+python capture_video.py "$1" 
