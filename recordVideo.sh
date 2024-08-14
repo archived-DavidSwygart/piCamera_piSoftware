@@ -5,4 +5,4 @@
 cd "$(dirname "$0")" #CD to directory of this script
 
 v4l2-ctl --set-ctrl wide_dynamic_range=1 -d /dev/v4l-subdev0 #Turn on HDR video mode
-python capture_video.py ${1:-100} 
+python recordVideo.py ${1:-0} 
