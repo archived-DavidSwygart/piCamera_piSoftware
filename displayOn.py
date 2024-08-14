@@ -19,7 +19,7 @@ os.environ["LIBCAMERA_LOG_LEVELS"]="3"
 
 os.environ["DISPLAY"] = ':0' 
 
-duration = 60*60*24
+duration = 10#60*60*24
 if len(sys.argv) > 1:
     if int(sys.argv[1])>0:
         duration = int(sys.argv[1])
