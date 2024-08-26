@@ -1,7 +1,11 @@
 #!/usr/bin/python3
+import os
+os.system("v4l2-ctl --set-ctrl wide_dynamic_range=1 -d /dev/v4l-subdev0") #turn on HDR
+#os.system("v4l2-ctl --set-ctrl wide_dynamic_range=0 -d /dev/v4l-subdev0") #turn off HDR
+scriptPath = os.path.dirname(__file__)
+
 from pprint import *
 import time
-import os
 import sys
 
 #This script assumes HDR is turned on. HDR must be turned on at terminal
@@ -19,7 +23,7 @@ os.environ["LIBCAMERA_LOG_LEVELS"]="3"
 
 os.environ["DISPLAY"] = ':0' 
 
-duration = 60*60*24
+duration = 10
 if len(sys.argv) > 1:
     if int(sys.argv[1])>0:
         duration = int(sys.argv[1])
@@ -41,7 +45,7 @@ encoder = H264Encoder(
 
 import datetime
 vidName = datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
-output = FfmpegOutput(output_filename='vids/'+vidName+'.mp4')
+output = FfmpegOutput(output_filename= scriptPath+'/vids/'+vidName+'.mp4')
 
 picam2.start_preview(Preview.QTGL, width=800, height=480, x=0, y=0)
 picam2.title_fields = ["ExposureTime", "AnalogueGain","Lux"]
