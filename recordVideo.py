@@ -19,7 +19,6 @@ os.environ["LIBCAMERA_LOG_LEVELS"]="3"
 
 os.environ["DISPLAY"] = ':0' 
 
-
 duration = 60*60*24
 if len(sys.argv) > 1:
     if int(sys.argv[1])>0:
@@ -31,6 +30,8 @@ picam2 = Picamera2()
 modeNum = 0
 mode = picam2.sensor_modes[modeNum]
 picam2.video_configuration.sensor.output_size = mode['size']
+picam2.video_configuration.transform.hflip = True
+picam2.video_configuration.transform.vflip = True
 picam2.configure("video")
 
 encoder = H264Encoder(
