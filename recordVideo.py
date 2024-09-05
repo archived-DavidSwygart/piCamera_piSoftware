@@ -17,8 +17,8 @@ os.environ["LIBCAMERA_LOG_LEVELS"]="3"
 parser = argparse.ArgumentParser(description='Display and record video.')
 parser.add_argument('--duration', '-d', 
                     type=int, 
-                    help='Recording duration in seconds (default=10s)',
-                    default='10')
+                    help='Recording duration in seconds (default=86400s)',
+                    default='86400')
 parser.add_argument('--noSave', '-n', 
                     action='store_true',
                     help='No file is saved. Screen still displays the video')
