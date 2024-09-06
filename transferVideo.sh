@@ -3,4 +3,8 @@
 
 cd "$(dirname "$0")"
 echo "Started video transfer to ""$1"" at ""$(date +%H:%M:%S)"" "
-rsync --recursive --times --compress --progress vids "$1"
+rsync --recursive --times --compress --progress --exclude=.gitignore  vids "$1"
+
+
+echo "completed hit enter to end"
+read inputVariable
