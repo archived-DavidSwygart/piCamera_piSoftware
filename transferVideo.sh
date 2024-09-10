@@ -1,9 +1,10 @@
 #!/bin/bash
-# requires path to behavior server as 1st positional argument
+# requires username as 1st positional argument and path to save folder as 2nd positional argument
 
 cd "$(dirname "$0")"
-echo "Started video transfer to ""$1"" at ""$(date +%H:%M:%S)"" "
-rsync --recursive --times --compress --progress --exclude=.gitignore  vids "$1"
+path=$1@10.1.1.0:$2
+echo "Started video transfer to ""$path"" at ""$(date +%H:%M:%S)"" "
+rsync --recursive --times --compress --progress --exclude=.gitignore  vids "$path"
 
 
 echo "completed hit enter to end"
