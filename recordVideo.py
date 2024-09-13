@@ -29,6 +29,7 @@ args = parser.parse_args()
 picam2 = Picamera2()
 
 #Configure camera
+print('configuring camera')
 modeNum = 0
 mode = picam2.sensor_modes[modeNum]
 picam2.video_configuration.sensor.output_size = mode['size']
@@ -37,11 +38,13 @@ picam2.video_configuration.transform.vflip = True
 picam2.configure("video")
 
 #Start preview window
+print('Starting preview window')
 picam2.start_preview(Preview.QTGL, width=800, height=480, x=0, y=0)
 picam2.title_fields = ["ExposureTime", "AnalogueGain","Lux"]
 
 # Set up encoder
 if not args.noSave:
+    print('Setting up H264 encoder')
     encoder = H264Encoder(
         bitrate=10000000,
         framerate=mode['fps']
@@ -50,6 +53,7 @@ if not args.noSave:
     hostname = os.uname().nodename
     now = datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
     saveFile = scriptPath+'/vids/'+hostname+'_'+now+'.mp4'
+    print('SavingFile as '+saveFile)
     output = FfmpegOutput(output_filename=saveFile)
     picam2.start_encoder(
         encoder=encoder,
@@ -58,7 +62,9 @@ if not args.noSave:
 
 #Record for specified duration
 picam2.start()
+print('waiting for a duration of '+str(args.duration) + ' seconds')
 time.sleep(args.duration)
 picam2.stop()
 if not args.noSave:
     picam2.stop_encoder()
+print('recordVideo.py finished)

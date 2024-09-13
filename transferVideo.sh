@@ -5,7 +5,4 @@ cd "$(dirname "$0")"
 path=$1@10.1.1.0:$2
 echo "Started video transfer to ""$path"" at ""$(date +%H:%M:%S)"" "
 rsync --recursive --times --compress --progress --exclude=.gitignore  vids "$path"
-
-
-echo "completed hit enter to end"
-read inputVariable
+echo "transferVideo.sh Finished"
