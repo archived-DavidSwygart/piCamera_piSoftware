@@ -1,2 +1,2 @@
 #!/bin/bash
-pkill -15 -f recordVideo.py
+pkill -15 -f recordVideo.py --echo
