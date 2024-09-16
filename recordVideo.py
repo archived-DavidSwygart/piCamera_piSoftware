@@ -7,6 +7,7 @@ os.environ["DISPLAY"] = ':0'
 from picamera2 import Picamera2, Preview
 from picamera2.encoders import H264Encoder
 from picamera2.outputs import FfmpegOutput
+import warnings
 import argparse, datetime, time
 
 #Turn off Info and warning logging
@@ -22,6 +23,9 @@ parser.add_argument('--duration', '-d',
 parser.add_argument('--noSave', '-n', 
                     action='store_true',
                     help='No file is saved. Screen still displays the video')
+parser.add_argument('--session', '-s', 
+                    help='Name session, which determines the folder name in which the video will be saved defaults to date and time)'
+                    )
 
 args = parser.parse_args()
 
@@ -52,8 +56,22 @@ if not args.noSave:
     scriptPath = os.path.dirname(__file__)
     hostname = os.uname().nodename
     now = datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
-    saveFile = scriptPath+'/vids/'+hostname+'_'+now+'.mp4'
+
+    if args.session is None:
+        session = now
+    else:
+        session = args.session
+
+    saveDirectory = scriptPath + '/vids/' + session + '/' + hostname
+
+    if os.path.exists(saveDirectory):
+        warnings.warn("directory already exists for "+session+". Other videos could already be in "+saveDirectory)
+    else:
+        os.makedirs(saveDirectory)
+
+    saveFile = saveDirectory + '/' + now + '.mp4'
     print('SavingFile as '+saveFile)
+    
     output = FfmpegOutput(output_filename=saveFile)
     picam2.start_encoder(
         encoder=encoder,
@@ -67,4 +85,4 @@ time.sleep(args.duration)
 picam2.stop()
 if not args.noSave:
     picam2.stop_encoder()
-print('recordVideo.py finished)
+print('recordVideo.py finished')
