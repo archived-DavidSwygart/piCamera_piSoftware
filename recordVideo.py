@@ -76,10 +76,13 @@ if not args.noSave:
     else:
         os.makedirs(saveDirectory)
 
-    saveFile = saveDirectory + '/' + now + '.mp4'
+    saveFile = saveDirectory + '/' + now
     print('SavingFile as '+saveFile)
     
-    output = FfmpegOutput(output_filename=saveFile)
+    output = FfmpegOutput(
+        output_filename=saveFile+'.mp4',
+        pts=saveFile+'.pts'
+        )
     picam2.start_encoder(
         encoder=encoder,
         output=output
