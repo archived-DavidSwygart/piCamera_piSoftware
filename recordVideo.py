@@ -62,7 +62,7 @@ if not args.noSave:
         )
     scriptPath = os.path.dirname(__file__)
     hostname = os.uname().nodename
-    now = datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+    now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 
     if args.session is None:
         session = now
