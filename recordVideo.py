@@ -7,8 +7,15 @@ os.environ["DISPLAY"] = ':0'
 from picamera2 import Picamera2, Preview
 from picamera2.encoders import H264Encoder
 from picamera2.outputs import FfmpegOutput
-import warnings
+import warnings, signal, sys
 import argparse, datetime, time
+
+def endRecording(sig, frame):
+    picam2.stop()
+    if not args.noSave:
+        picam2.stop_encoder()
+    print('recordVideo.py finished')
+    sys.exit(0)
 
 #Turn off Info and warning logging
 Picamera2.set_logging(Picamera2.ERROR)
@@ -80,9 +87,9 @@ if not args.noSave:
 
 #Record for specified duration
 picam2.start()
+signal.signal(signal.SIGINT, endRecording)
+signal.signal(signal.SIGTERM, endRecording)
 print('waiting for a duration of '+str(args.duration) + ' seconds')
 time.sleep(args.duration)
-picam2.stop()
-if not args.noSave:
-    picam2.stop_encoder()
-print('recordVideo.py finished')
+endRecording(0,None)
+
