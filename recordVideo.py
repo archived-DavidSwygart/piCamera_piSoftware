@@ -7,6 +7,7 @@ os.environ["DISPLAY"] = ':0'
 from picamera2 import Picamera2, Preview
 from picamera2.encoders import H264Encoder
 from picamera2.outputs import FfmpegOutput
+from libcamera import Transform
 import warnings, signal, sys
 import argparse, datetime, time
 
@@ -43,15 +44,32 @@ picam2 = Picamera2()
 print('configuring camera')
 modeNum = 0
 mode = picam2.sensor_modes[modeNum]
-picam2.video_configuration.sensor.output_size = mode['size']
-picam2.video_configuration.transform.hflip = True
-picam2.video_configuration.transform.vflip = True
-picam2.configure("video")
+config = picam2.create_video_configuration(
+    sensor={
+        'output_size': mode['size'],
+        'bit_depth': mode['bit_depth']
+    }
+)
+picam2.configure(config)
 
 #Start preview window
 print('Starting preview window')
-picam2.start_preview(Preview.QTGL, width=800, height=480, x=0, y=0)
-picam2.title_fields = ["ExposureTime", "AnalogueGain","Lux"]
+picam2.start_preview(
+    Preview.QTGL, 
+    width=800, 
+    height=480, 
+    x=0, 
+    y=0,
+    transform=Transform(
+        hflip=1,
+        vflip=1
+    )
+)
+picam2.title_fields = [
+    "ExposureTime",
+    "FrameDuration",
+    "Lux"
+    ]
 
 # Set up encoder
 if not args.noSave:
@@ -87,8 +105,6 @@ if not args.noSave:
         encoder=encoder,
         output=output
         )
-
-
 
 signal.signal(signal.SIGINT, endRecording)
 signal.signal(signal.SIGTERM, endRecording)
