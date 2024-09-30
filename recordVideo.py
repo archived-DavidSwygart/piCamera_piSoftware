@@ -94,28 +94,7 @@ signal.signal(signal.SIGINT, endRecording)
 signal.signal(signal.SIGTERM, endRecording)
 
 #Record for specified duration
-try:
-    picam2.start()
-    print('waiting for a duration of '+str(args.duration) + ' seconds')
-    time.sleep(args.duration)
-except:
-    print("error caught. Trying to stop picam2")
-    picam2.stop()
-    if not args.noSave:
-        picam2.stop_encoder()
-    print("Setting up new encoder")
-    if not args.noSave:
-        output = FfmpegOutput(
-            output_filename=saveFile+'_2'+'.mp4',
-            pts=saveFile+'_2'+'.pts'
-            )
-        picam2.start_encoder(
-            encoder=encoder,
-            output=output
-            )
-    print("Starting PiCam2")
-    picam2.start()
-    print('waiting for a duration of '+str(args.duration) + ' seconds')
-    time.sleep(args.duration)
-
+picam2.start()
+print('waiting for a duration of '+str(args.duration) + ' seconds')
+time.sleep(args.duration)
 endRecording(0,None)
